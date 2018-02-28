@@ -1,0 +1,40 @@
+﻿@model CSIMediaTest.ViewModels.NumbersViewModel
+
+<div id="listOfSortedNumbers" class="container">
+   
+
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:75%">
+                        @Html.LabelFor(x => x.Numbers)
+                    </th>
+                    <th>
+                        @Html.LabelFor(x => x.SortDirection)
+                    </th>
+                    <th>
+                        @Html.LabelFor(x => x.TimeTakenToSort)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.NumbersRow)
+            {
+                    <tr>
+                        <td style="word-wrap: break-word">
+                            @Html.DisplayFor(x => item.Numbers)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.SortDirection)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.TimeTakenToSort)
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

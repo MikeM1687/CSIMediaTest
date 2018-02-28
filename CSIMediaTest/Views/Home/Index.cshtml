@@ -1,0 +1,137 @@
+﻿@model CSIMediaTest.ViewModels.NumbersViewModel
+
+<div class="container">
+
+    @using (Html.BeginForm("Save", "Home", FormMethod.Post, new { id = "numberSortForm" }))
+    {
+        <br />
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="form-control">
+                            @Html.TextBoxFor(x => x.Number, new { id = "txtNumber" })
+
+                            <a id="btnAddNumber" class="btn">Add Number</a>
+
+                            <span class="alert-danger">
+                                @Html.ValidationMessageFor(x => x.Number)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.ListBoxFor(x => x.NumbersList, new List<SelectListItem>(), new { id = "lstNumber", style = "width: 50%" })
+                    </div>
+                </div>
+            </div>
+
+            @Html.HiddenFor(x => x.TimeTakenToSort, new { id = "timeTakenToSort" })
+            @Html.HiddenFor(x => x.SortDirection, new { id = "direction" })
+
+            <div class="row">
+                <a id="btnSortAscending" class="btn">Ascending</a>
+                <a id="btnSortDescending" class="btn">Descending</a>
+                <span class="alert-danger">
+                    @Html.ValidationMessageFor(x => x.NumbersList)
+                </span>
+            </div>
+
+        </div>
+    }
+
+    <div class="container">
+        <a id="btnExportToXml" class="btn">Export To Xml</a>
+    </div>
+            <div class="col-md-12">
+                <br />
+                @Html.Partial("_ShowAllSortings", Model)
+            </div>
+    
+</div>
+
+
+@section Scripts
+{
+
+<script type="text/javascript">
+
+    $("#btnExportToXml").click(function () {
+        $.post('@Url.Action("ExportToXml", "Home")')
+            .done(function () {
+                alert("Database exported to C:/Temp/Numbers.xml");
+            });
+    });
+
+    $("#btnAddNumber").click(function () {
+
+        var number = $("#txtNumber").val();
+
+        var isNumeric = $.isNumeric(number);
+
+        if (isNumeric != false) {
+            $("#lstNumber").append('<option value="' + number + '">' + number + '</option>');
+        }
+        else {
+            return false;
+        }
+
+        $("#txtNumber").val("");
+
+
+    });
+
+    $("#btnSortAscending").click(function () {
+
+        var numberList = $("#lstNumber option");
+
+        $(numberList).remove();
+        $("#lstNumber").append($(numberList));
+
+        $("#direction").val("Ascending");
+        $("#lstNumber option").prop('selected', true);
+
+        var formValues = $("#numberSortForm").serialize();
+
+        $.post('@Url.Action("Save", "Home")', formValues)
+            .done(function () {
+                $.ajaxSetup({ cache: false });
+                $('#listOfSortedNumbers').load('@Url.Action("GetAllRecordsPartialView", "Home")');
+            });
+
+        ClearList();
+
+    })
+
+    $("#btnSortDescending").click(function () {
+
+        var numberList = $("#lstNumber option");
+
+        $(numberList).remove();
+        $("#lstNumber").append($(numberList));
+
+        $("#direction").val("Descending");
+        $("#lstNumber option").prop('selected', true);
+
+        var formValues = $("#numberSortForm").serialize();
+
+        $.post('@Url.Action("Save", "Home")', formValues)
+            .done(function () {
+                $.ajaxSetup({ cache: false });
+                $('#listOfSortedNumbers').load('@Url.Action("GetAllRecordsPartialView", "Home")');
+            });
+
+        ClearList();
+
+    })
+
+    function ClearList() {
+        $("#lstNumber").empty();
+    }
+
+    </script>
+}
