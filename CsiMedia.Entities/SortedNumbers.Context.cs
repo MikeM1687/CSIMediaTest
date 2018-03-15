@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CSIMediaTest.Models
+namespace CsiMedia.Entities
 {
     using System;
     using System.Data.Entity;

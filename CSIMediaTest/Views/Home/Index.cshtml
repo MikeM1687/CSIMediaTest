@@ -2,25 +2,24 @@
 
 <div class="container">
 
-    @using (Html.BeginForm("Save", "Home", FormMethod.Post, new { id = "numberSortForm" }))
-    {
-        <br />
-        <div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <div class="form-control">
-                            @Html.TextBoxFor(x => x.Number, new { id = "txtNumber" })
 
-                            <a id="btnAddNumber" class="btn">Add Number</a>
+    <br />
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                        @Html.TextBoxFor(x => x.Number, new { id = "txtNumber" })
 
-                            <span class="alert-danger">
-                                @Html.ValidationMessageFor(x => x.Number)
-                            </span>
-                        </div>
-                    </div>
+                        <a id="btnAddNumber" class="btn">Add Number</a>
+
+                        <span class="alert-danger">
+                            @Html.ValidationMessageFor(x => x.Number)
+                        </span>
                 </div>
             </div>
+        </div>
+        @using (Html.BeginForm("ExportToXml", "Home", FormMethod.Post, new { id = "numberSortForm" }))
+        {
 
             <div class="row">
                 <div class="col-md-6">
@@ -34,24 +33,24 @@
             @Html.HiddenFor(x => x.SortDirection, new { id = "direction" })
 
             <div class="row">
-                <a id="btnSortAscending" class="btn">Ascending</a>
-                <a id="btnSortDescending" class="btn">Descending</a>
+                <a id="btnSortAscending" value="Ascending" class="btn">Ascending</a>
+                <a id="btnSortDescending" value="Descending" class="btn">Descending</a>
                 <span class="alert-danger">
                     @Html.ValidationMessageFor(x => x.NumbersList)
                 </span>
             </div>
 
-        </div>
-    }
-
-    <div class="container">
-        <a id="btnExportToXml" class="btn">Export To Xml</a>
-    </div>
+            <br />
+            <div class="container">
+                <input class="btn" type="submit" value="Export To XML" />
+            </div>
             <div class="col-md-12">
                 <br />
                 @Html.Partial("_ShowAllSortings", Model)
             </div>
-    
+        }
+
+    </div>
 </div>
 
 
@@ -59,13 +58,6 @@
 {
 
 <script type="text/javascript">
-
-    $("#btnExportToXml").click(function () {
-        $.post('@Url.Action("ExportToXml", "Home")')
-            .done(function () {
-                alert("Database exported to C:/Temp/Numbers.xml");
-            });
-    });
 
     $("#btnAddNumber").click(function () {
 
@@ -87,21 +79,11 @@
 
     $("#btnSortAscending").click(function () {
 
-        var numberList = $("#lstNumber option");
-
-        $(numberList).remove();
-        $("#lstNumber").append($(numberList));
+        AppendList();
 
         $("#direction").val("Ascending");
-        $("#lstNumber option").prop('selected', true);
 
-        var formValues = $("#numberSortForm").serialize();
-
-        $.post('@Url.Action("Save", "Home")', formValues)
-            .done(function () {
-                $.ajaxSetup({ cache: false });
-                $('#listOfSortedNumbers').load('@Url.Action("GetAllRecordsPartialView", "Home")');
-            });
+        PostForm();
 
         ClearList();
 
@@ -109,21 +91,11 @@
 
     $("#btnSortDescending").click(function () {
 
-        var numberList = $("#lstNumber option");
-
-        $(numberList).remove();
-        $("#lstNumber").append($(numberList));
+        AppendList();
 
         $("#direction").val("Descending");
-        $("#lstNumber option").prop('selected', true);
 
-        var formValues = $("#numberSortForm").serialize();
-
-        $.post('@Url.Action("Save", "Home")', formValues)
-            .done(function () {
-                $.ajaxSetup({ cache: false });
-                $('#listOfSortedNumbers').load('@Url.Action("GetAllRecordsPartialView", "Home")');
-            });
+        PostForm();
 
         ClearList();
 
@@ -133,5 +105,24 @@
         $("#lstNumber").empty();
     }
 
-    </script>
+    function AppendList() {
+        var numberList = $("#lstNumber option");
+
+        $(numberList).remove();
+        $("#lstNumber").append($(numberList));
+    }
+
+    function PostForm() {
+        $("#lstNumber option").prop('selected', true);
+
+        var formValues = $("#numberSortForm").serialize();
+
+        $.post('@Url.Action("Save", "Home")', formValues)
+            .done(function () {
+                $.ajaxSetup({ cache: false });
+                $('#listOfSortedNumbers').load('@Url.Action("GetAllRecordsPartialView", "Home")');
+            });
+    }
+
+</script>
 }

@@ -1,11 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSIMediaTest", "CSIMediaTest\CSIMediaTest.csproj", "{68FABDA1-A641-43C7-B510-49C46257C47B}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "CsiMediaTest.Database", "CsiMediaTest.Database\CsiMediaTest.Database.sqlproj", "{4F861118-CA74-4CBE-B112-5A19FE2F2CCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsiMediaTest.Services.Interfaces", "CsiMediaTest.Services.Interfaces\CsiMediaTest.Services.Interfaces.csproj", "{74A4F7ED-A162-4611-B442-423DEBF36031}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsiMediaTest.Services", "CsiMediaTest.Services\CsiMediaTest.Services.csproj", "{F4A44A1C-EE71-496B-84C8-AFCFB422B45A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsiMedia.Entities", "CsiMedia.Entities\CsiMedia.Entities.csproj", "{5BBAA73F-9370-491C-8706-88DF54B6B88D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsiMediaTest.Tests", "CsiMediaTest.Tests\CsiMediaTest.Tests.csproj", "{341DB142-497F-47A6-8589-F52E58B2F405}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +31,22 @@ Global
 		{4F861118-CA74-4CBE-B112-5A19FE2F2CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F861118-CA74-4CBE-B112-5A19FE2F2CCF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F861118-CA74-4CBE-B112-5A19FE2F2CCF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{74A4F7ED-A162-4611-B442-423DEBF36031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74A4F7ED-A162-4611-B442-423DEBF36031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74A4F7ED-A162-4611-B442-423DEBF36031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74A4F7ED-A162-4611-B442-423DEBF36031}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4A44A1C-EE71-496B-84C8-AFCFB422B45A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4A44A1C-EE71-496B-84C8-AFCFB422B45A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4A44A1C-EE71-496B-84C8-AFCFB422B45A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4A44A1C-EE71-496B-84C8-AFCFB422B45A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BBAA73F-9370-491C-8706-88DF54B6B88D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BBAA73F-9370-491C-8706-88DF54B6B88D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BBAA73F-9370-491C-8706-88DF54B6B88D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BBAA73F-9370-491C-8706-88DF54B6B88D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{341DB142-497F-47A6-8589-F52E58B2F405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{341DB142-497F-47A6-8589-F52E58B2F405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{341DB142-497F-47A6-8589-F52E58B2F405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{341DB142-497F-47A6-8589-F52E58B2F405}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

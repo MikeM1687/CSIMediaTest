@@ -16,7 +16,7 @@ namespace CSIMediaTest.ViewModels
         public int Number { get; set; }
 
         [DisplayName("Sort Direction")]
-        public string SortDirection { get; set; }
+        public SortDirection SortDirection { get; set; }
 
         [DisplayName("Time Taken To Sort (ticks)")]
         public int TimeTakenToSort { get; set; }

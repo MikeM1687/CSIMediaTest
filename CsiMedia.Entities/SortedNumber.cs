@@ -7,11 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CSIMediaTest.Models
+namespace CsiMedia.Entities
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class SelectAll_Result
+    public partial class SortedNumber
     {
         public int Id { get; set; }
         public string OrderedDirection { get; set; }

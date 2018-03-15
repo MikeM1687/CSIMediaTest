@@ -1,18 +1,26 @@
-﻿using CSIMediaTest.Models;
+﻿using CsiMediaTest.Services.Interfaces;
+using CSIMediaTest.Models;
 using CSIMediaTest.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace CSIMediaTest.Controllers
 {
     public class HomeController : Controller
     {
-        private Entities db = new Entities();
+        private readonly IDataService _dataService;
+
+        public HomeController(IDataService dataService)
+        {
+            this._dataService = dataService;
+        }
 
         public ActionResult Index(NumbersViewModel vm)
         {
@@ -34,12 +42,9 @@ namespace CSIMediaTest.Controllers
             string numbers = ""; ;
             var numbersList = vm.NumbersList;
 
-            foreach (var number in numbersList)
-            {
-                numbers = String.Join(",", numbersList);
-            }
+            numbers = String.Join(",", numbersList);
 
-            db.Insert(vm.SortDirection, vm.TimeTakenToSort, numbers);
+            _dataService.Insert(vm.SortDirection.ToString(), vm.TimeTakenToSort, numbers);
 
             GetAllRecordsPartialView(vm);
 
@@ -48,7 +53,7 @@ namespace CSIMediaTest.Controllers
 
         public ActionResult GetAllRecordsPartialView(NumbersViewModel vm)
         {
-            var records = db.SelectAll();
+            var records = _dataService.GetAll();
             vm.NumbersRow = new List<NumberRowViewModel>();
 
             records.OrderBy(x => x.TimeTakenToSort).ToList().ForEach(x =>
@@ -64,32 +69,54 @@ namespace CSIMediaTest.Controllers
             return PartialView("_ShowAllSortings", vm);
         }
 
-        public ActionResult ExportToXml()
+        [HttpPost]
+        public FileResult ExportToXml()
         {
-            var data = db.SortedNumbers.OrderBy(x => x.TimeTakenToSort).ToList();
+            try
+            {
+                var data = _dataService.GetAll().OrderBy(x => x.TimeTakenToSort).ToList();
 
-            XDocument doc = new XDocument(
-                new XDeclaration("1.0", "utf-8", "yes"),
-                new XElement("Numbers",
-                from num in data
-                select
-                new XElement("Number", new XElement("NumberString", num.Numbers),
-                new XElement("SortDirection", num.OrderedDirection),
-                new XElement("TimeTakenToSort", num.TimeTakenToSort))));
+                MemoryStream ms = new MemoryStream();
+                XmlWriterSettings xws = new XmlWriterSettings
+                {
+                    OmitXmlDeclaration = true,
+                    Indent = true
+                };
 
-            doc.Save("C:/Temp/Numbers.xml");
+                using (XmlWriter writer = XmlWriter.Create(ms, xws))
+                {
+                    XDocument doc = new XDocument(
+                   new XDeclaration("1.0", "utf-8", "yes"),
+                   new XElement("Numbers",
+                   from num in data
+                   select
+                   new XElement("Number", new XElement("NumberString", num.Numbers),
+                   new XElement("SortDirection", num.OrderedDirection),
+                   new XElement("TimeTakenToSort", num.TimeTakenToSort))));
 
-            return Json(new { success = true });
+                    doc.WriteTo(writer);
+                }
+
+                ms.Position = 0;
+
+                return File(ms, "application/xml", "Numbers.xml");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
 
         }
-    
+
         private static void SortNumbers(NumbersViewModel vm)
         {
             var timer = Stopwatch.StartNew();
 
             switch (vm.SortDirection)
             {
-                case "Descending":
+                case SortDirection.Descending:
                     vm.NumbersList = vm.NumbersList.OrderByDescending(x => x);
                     break;
                 default:
